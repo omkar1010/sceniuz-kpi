@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
+import { CSVLink } from 'react-csv';
+import { Button } from '@mui/material';
+
 const DataTable = ({ category, subcategory }) => {
   const [data, setData] = useState([]);
 
@@ -447,16 +450,36 @@ const DataTable = ({ category, subcategory }) => {
     { field: 'Industry', headerName: 'Industry', width: 200 }
   ];
 
+  const csvData = data.map(({ id, KPI, Description, Industry }) => ({
+    id,
+    KPI,
+    Description,
+    Industry,
+  }));
+
   return (
+    <div>
+
+<div style={{ marginBottom: '16px' , marginLeft:"86%"}}>
+<Button variant="contained" color="success">
+   
+<CSVLink style={{ textDecoration: 'none', color: 'White', cursor: 'pointer' }} data={csvData} filename={`data_${category}_${subcategory}.csv`}>
+          Export to CSV
+        </CSVLink>
+</Button>
+       
+      </div>
+        
     <conatiner style={{ height: 400, width: '98%' }}>
       <DataGrid
         rows={data}
         columns={columns}
         pageSize={5}
-        checkboxSelection
         disableSelectionOnClick
+        checkboxSelection
       />
     </conatiner>
+    </div>
   );
 };
 
